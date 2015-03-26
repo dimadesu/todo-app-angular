@@ -4,7 +4,9 @@
 	angular.module('todo', [
 		'ui.router',
 		'ui.bootstrap',
+		'LocalStorageModule',
 		// Custom modules
+		'todo.all',
 		'todo.alerts'
 	]).config(['$urlRouterProvider', '$provide', '$httpProvider',
 		function ($urlRouterProvider, $provide, $httpProvider) {
