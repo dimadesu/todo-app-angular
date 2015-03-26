@@ -1,6 +1,34 @@
-(function( window ) {
+(function(angular) {
 	'use strict';
 
-	// Your starting point. Enjoy the ride!
+	angular.module('todo', [
+		'ui.router',
+		'ui.bootstrap',
+		// Custom modules
+		'todo.alerts'
+	]).config(['$urlRouterProvider', '$provide', '$httpProvider',
+		function ($urlRouterProvider, $provide, $httpProvider) {
 
-})( window );
+			// Handle unmatched url
+			$urlRouterProvider.otherwise("/");
+
+			$provide.factory('httpInterceptor', function ($q) {
+				var interceptor = {
+					response: function (response) {
+						return response || $q.when(response);
+					},
+					responseError: function (rejection) {
+						interceptor.errors.push('Cannot load ' + rejection.config.url);
+						return $q.reject(rejection);
+					},
+					errors: []
+				};
+				return interceptor;
+			});
+
+			$httpProvider.interceptors.push('httpInterceptor');
+
+		}
+	]);
+
+})(window.angular);
