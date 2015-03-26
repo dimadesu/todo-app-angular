@@ -4,8 +4,6 @@
 	<meta charset="utf-8">
 	<title>TODO App Angular</title>
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
-	<!--<link rel="stylesheet" href="bower_components/todomvc-common/base.css">-->
-	<!-- CSS overrides - remove if you don't need it -->
 	<link rel="stylesheet" href="css/app.css">
 	<!-- Load Angular in head to prevent flash of view variables -->
 	<script src="bower_components/angular/angular.js"></script>
@@ -69,37 +67,31 @@
 	<div class="form-group">
 		<a class="btn btn-success">Mark all as complete</a>
 		<a class="btn btn-success">Mark selected as complete</a>
-		<!-- Hidden if no completed items are left ↓ -->
-		<a class="btn btn-danger">
+		<a ng-if="TodoModel.getCompleted().length" class="btn btn-danger">
 			<span class="glyphicon glyphicon-trash"></span>
-			Clear completed (1)
+			Clear completed ({{ TodoModel.getCompleted().length }})
 		</a>
 	</div>
-	<!-- This should hidden by default and shown when there are todos -->
-	<div class="row" ng-if="TodoModel.getActive().length > 0">
+	<div class="row">
 		<div class="col-xs-12">
-			<!-- This should be `0 items left` by default -->
 			<strong>{{ TodoModel.getActive().length }}</strong> items left
 		</div>
 	</div>
-	<!-- This section should be hidden by default and shown when there are todos -->
-	<section>
-		<!-- These are here just to show the structure of the list items -->
+	<section class="items" ng-if="items.length > 0">
 		<!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
-		<div class="row" ng-repeat="item in items">
+		<div class="row item" ng-repeat="item in items">
 			<div class="col-xs-1">
-				<div class="checkbox">
-					<label>
-						<input type="checkbox" />
-					</label>
-				</div>
+				<input type="checkbox" />
 			</div>
-			<div class="col-xs-11">
+			<div class="col-xs-11" ng-class="{ completed: !item.isActive }">
 				<div class="pull-right item-buttons">
-					<a class="btn btn-success">
+					<a ng-if="item.isActive" ng-click="completeItem($index)" class="btn btn-primary" title="Mark as complete">
 						<span class="glyphicon glyphicon-ok"></span>
 					</a>
-					<a class="btn btn-danger" ng-click="removeItem($index)">
+					<a ng-if="!item.isActive" ng-click="activateItem($index)" class="btn btn-success" title="Mark as active">
+						<span class="glyphicon glyphicon-repeat"></span>
+					</a>
+					<a ng-click="removeItem($index)" class="btn btn-danger" title="Remove">
 						<span class="glyphicon glyphicon-trash"></span>
 					</a>
 				</div>
@@ -109,7 +101,7 @@
 				<input ng-if="item.isEdit"
 					   ng-keyup="$event.keyCode == 13 ? item.isEdit = false : null"
 					   ng-model="item.content"
-					   class="form-control" value="{{ item.content }}" />
+					   class="form-control item-editor" value="{{ item.content }}" />
 			</div>
 		</div>
 	</section>

@@ -25,6 +25,14 @@
                     TodoModel.remove(itemIndex);
                 };
 
+                $scope.completeItem = function (itemIndex) {
+                    TodoModel.complete(itemIndex);
+                };
+
+                $scope.activateItem = function (itemIndex) {
+                    TodoModel.activate(itemIndex);
+                };
+
             }
         ]);
 
