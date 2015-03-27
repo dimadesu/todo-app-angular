@@ -37,7 +37,7 @@
                     this.ts = new Date().valueOf();
                 },
                 add: function (content) {
-                    this.data.push(new Item({ content: content }));
+                    this.data.push(new this.Item({ content: content }));
                     this.save();
                 },
                 getItemIndex: function (_item) {
