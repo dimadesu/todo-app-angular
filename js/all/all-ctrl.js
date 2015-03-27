@@ -44,12 +44,6 @@
 
                 $scope.TodoModel = TodoModel;
 
-                $scope.$watch(function () {
-                    return TodoModel.data.length;
-                }, function () {
-                    $scope.items = TodoModel.data;
-                });
-
                 $scope.createItem = function ($event) {
                     if($event.keyCode === 13) {
                         TodoModel.add($scope.newItem);
@@ -57,25 +51,13 @@
                     }
                 };
 
-                $scope.removeItem = function (itemIndex) {
-                    TodoModel.remove(itemIndex);
-                };
-
-                $scope.completeItem = function (itemIndex) {
-                    TodoModel.complete(itemIndex);
-                };
-
-                $scope.activateItem = function (itemIndex) {
-                    TodoModel.activate(itemIndex);
-                };
-
-                $scope.enableEdit = function (itemIndex) {
+                $scope.enableEdit = function (_item) {
                     // Allow only one editor enabled at a time
                     TodoModel.data.forEach(function (item, i) {
-                        if (itemIndex === i) {
+                        if (item.ts === _item.ts) {
                             item.isEdit = true;
                             $timeout(function () {
-                                angular.element('#item-editor-' + itemIndex).focus();
+                                angular.element('#item-editor-' + item.ts).focus();
                             });
                         } else {
                             item.isEdit = false;
@@ -83,31 +65,10 @@
                     });
                 };
 
-                /* Operations on groups of items */
-
-                $scope.selectAll = function () {
-                    TodoModel.data.forEach(function (item) {
-                        item.isSelected = true;
-                    });
-                };
-
-                $scope.markSelectedComplete = function () {
-                    TodoModel.data.forEach(function (item, index) {
-                        if (item.isSelected) {
-                            TodoModel.complete(index);
-                        }
-                    });
-                };
-
-                $scope.removeCompleted = function () {
-                    var completed = TodoModel.getCompleted();
-                    for (var i = TodoModel.data.length-1; i >= 0; i--) {
-                        completed.some(function (comp) {
-                            if (TodoModel.data[i].ts === comp.ts) {
-                                TodoModel.data.splice(i, 1);
-                                return true;
-                            }
-                        });
+                $scope.saveEdited = function ($event, item) {
+                    if ($event.keyCode === 13) {
+                        item.isEdit = false;
+                        TodoModel.save();
                     }
                 };
 

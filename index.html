@@ -66,15 +66,15 @@
 			   class="form-control" placeholder="What needs to be done?" autofocus />
 	</div>
 	<div class="form-group">
-		<a class="btn btn-default" ng-click="selectAll()">
+		<a class="btn btn-default" ng-click="TodoModel.selectAll()">
             <span class="glyphicon glyphicon-check"></span>
             Select all
         </a>
-		<a class="btn btn-primary" ng-click="markSelectedComplete()">
+		<a class="btn btn-primary" ng-click="TodoModel.markSelectedComplete()">
             <span class="glyphicon glyphicon-ok"></span>
             Mark selected ({{ TodoModel.getSelected().length }}) as complete
         </a>
-		<a ng-if="TodoModel.getCompleted().length" class="btn btn-danger" ng-click="removeCompleted()">
+		<a ng-if="TodoModel.getCompleted().length" class="btn btn-danger" ng-click="TodoModel.removeCompleted()">
 			<span class="glyphicon glyphicon-trash"></span>
 			Clear completed ({{ TodoModel.getCompleted().length }})
 		</a>
@@ -84,29 +84,29 @@
 			<strong>{{ TodoModel.getActive().length }}</strong> items left
 		</div>
 	</div>
-	<section class="items" ng-if="items.length > 0">
-		<div class="row item" ng-repeat="item in items | filter: search" ng-if="item.isVisible">
+	<section class="items" ng-if="TodoModel.data.length > 0">
+		<div class="row item" ng-repeat="item in TodoModel.data | filter: search | orderBy: 'ts' : true" ng-if="item.isVisible">
 			<div class="col-xs-1">
 				<input type="checkbox" ng-model="item.isSelected" />
 			</div>
 			<div class="col-xs-11" ng-class="{ completed: !item.isActive }">
 				<div class="pull-right item-buttons">
-					<a ng-if="item.isActive" ng-click="completeItem($index)" class="btn btn-primary" title="Mark as complete">
+					<a ng-if="item.isActive" ng-click="TodoModel.complete(item)" class="btn btn-primary" title="Mark as complete">
 						<span class="glyphicon glyphicon-ok"></span>
 					</a>
-					<a ng-if="!item.isActive" ng-click="activateItem($index)" class="btn btn-success" title="Mark as active">
+					<a ng-if="!item.isActive" ng-click="TodoModel.activate(item)" class="btn btn-success" title="Mark as active">
 						<span class="glyphicon glyphicon-repeat"></span>
 					</a>
-					<a ng-click="removeItem($index)" class="btn btn-danger" title="Remove">
+					<a ng-click="TodoModel.remove(item)" class="btn btn-danger" title="Remove">
 						<span class="glyphicon glyphicon-trash"></span>
 					</a>
 				</div>
                 <input ng-if="item.isEdit"
-                       ng-keyup="$event.keyCode == 13 ? item.isEdit = false : null"
                        ng-model="item.content"
-                       id="item-editor-{{ $index }}"
-                       class="form-control item-editor" value="{{ item.content }}" />
-				<div ng-if="!item.isEdit" ng-dblclick="enableEdit($index)" class="item-content">
+                       ng-keyup="saveEdited($event, item)"
+                       id="item-editor-{{ item.ts }}"
+                       class="form-control item-editor" />
+				<div ng-if="!item.isEdit" ng-dblclick="enableEdit(item)" class="item-content">
 					{{ item.content }}
 				</div>
 			</div>

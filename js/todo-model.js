@@ -5,6 +5,7 @@
         .factory('TodoModel', ['localStorageService', function (localStorageService) {
 
             var model = {
+                data: null,
                 init: function () {
                     var lsData = localStorageService.get('TodoModel');
                     if (lsData && lsData.length > 0) {
@@ -19,10 +20,11 @@
                 },
                 save: function () {
                     localStorageService.set('TodoModel', this.data.map(function (item) {
-                        item.isSelected = false;
-                        item.isVisible = true;
-                        item.isEdit = false;
-                        return item;
+                        return angular.extend({}, item, {
+                            isSelected: false,
+                            isVisible: true,
+                            isEdit: false
+                        });
                     }));
                 },
                 add: function (item) {
@@ -32,20 +34,25 @@
                         isActive: true,
                         isSelected: false,
                         isVisible: true,
-                        ts: new Date()
+                        ts: new Date().valueOf()
                     });
                     this.save();
                 },
-                remove: function (index) {
-                    this.data.splice(index, 1);
+                getItemIndex: function (_item) {
+                    return this.data.filter(function (item) {
+                        return _item.ts === item.ts;
+                    })[0];
+                },
+                remove: function (item) {
+                    this.data.splice(this.getItemIndex(item), 1);
                     this.save();
                 },
-                complete: function (index) {
-                    this.data[index].isActive = false;
+                complete: function (item) {
+                    item.isActive = false;
                     this.save();
                 },
-                activate: function (index) {
-                    this.data[index].isActive = true;
+                activate: function (item) {
+                    item.isActive = true;
                     this.save();
                 },
                 getActive: function () {
@@ -62,6 +69,31 @@
                     return this.data.filter(function (item) {
                         return item.isSelected;
                     });
+                },
+                /* Operations on groups of items */
+                selectAll: function () {
+                    this.data.forEach(function (item) {
+                        item.isSelected = true;
+                    });
+                },
+                markSelectedComplete: function () {
+                    this.data.forEach(function (item) {
+                        if (item.isSelected) {
+                            this.complete(item);
+                        }
+                    }, this);
+                },
+                removeCompleted: function () {
+                    var completed = this.getCompleted();
+                    for (var i = this.data.length-1; i >= 0; i--) {
+                        completed.some(function (comp) {
+                            if (this.data[i].ts === comp.ts) {
+                                this.data.splice(i, 1);
+                                return true;
+                            }
+                        }, this);
+                    }
+                    this.save();
                 }
             };
 
