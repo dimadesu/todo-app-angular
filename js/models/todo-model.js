@@ -90,6 +90,13 @@
                         }
                     }, this);
                 },
+                markSelectedActive: function () {
+                    this.data.forEach(function (item) {
+                        if (item.isSelected) {
+                            this.activate(item);
+                        }
+                    }, this);
+                },
                 removeCompleted: function () {
                     var completed = this.getCompleted();
                     for (var i = this.data.length-1; i >= 0; i--) {

@@ -48,6 +48,7 @@
                     if($event.keyCode === 13) {
                         TodoModel.add($scope.newItem);
                         $scope.newItem = null;
+                        refreshState();
                     }
                 };
 
@@ -74,6 +75,11 @@
 
                 $scope.markSelectedComplete = function () {
                     TodoModel.markSelectedComplete();
+                    refreshState();
+                };
+
+                $scope.markSelectedActive = function () {
+                    TodoModel.markSelectedActive();
                     refreshState();
                 };
 
@@ -104,6 +110,7 @@
                                 );
                             });
                             TodoModel.save();
+                            refreshState();
                         }
                     });
 

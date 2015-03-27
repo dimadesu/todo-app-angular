@@ -75,6 +75,10 @@
                 <span class="glyphicon glyphicon-ok"></span>
                 Mark selected ({{ TodoModel.getSelected().length }}) as complete
             </a>
+            <a class="btn btn-success" ng-click="markSelectedActive()">
+                <span class="glyphicon glyphicon-repeat"></span>
+                Mark selected ({{ TodoModel.getSelected().length }}) as active
+            </a>
             <a ng-if="TodoModel.getCompleted().length" class="btn btn-danger" ng-click="TodoModel.removeCompleted()">
                 <span class="glyphicon glyphicon-trash"></span>
                 Clear completed ({{ TodoModel.getCompleted().length }})
