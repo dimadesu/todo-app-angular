@@ -7,7 +7,7 @@
         .controller('AllCtrl', ['$scope', '$stateParams', 'TodoModel', '$timeout', '$state', '$rootScope',
             function ($scope, $stateParams, TodoModel, $timeout, $state, $rootScope) {
 
-                function stateInit () {
+                function refreshState () {
 
                     if ($state.is('active-state')) {
                         TodoModel.data.forEach(function (item) {
@@ -30,9 +30,9 @@
                     TodoModel.init();
 
                     // Since user can access through any url force checking the state on first load
-                    stateInit();
+                    refreshState();
 
-                    $rootScope.$on('$stateChangeSuccess', stateInit);
+                    $rootScope.$on('$stateChangeSuccess', refreshState);
 
                     isInited = true;
 
@@ -70,6 +70,21 @@
                         item.isEdit = false;
                         TodoModel.save();
                     }
+                };
+
+                $scope.markSelectedComplete = function () {
+                    TodoModel.markSelectedComplete();
+                    refreshState();
+                };
+
+                $scope.complete = function (item) {
+                    TodoModel.complete(item);
+                    refreshState();
+                };
+
+                $scope.activate = function (item) {
+                    TodoModel.activate(item);
+                    refreshState();
                 };
 
             }

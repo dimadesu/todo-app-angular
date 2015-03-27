@@ -70,7 +70,7 @@
             <span class="glyphicon glyphicon-check"></span>
             Select all
         </a>
-		<a class="btn btn-primary" ng-click="TodoModel.markSelectedComplete()">
+		<a class="btn btn-primary" ng-click="markSelectedComplete()">
             <span class="glyphicon glyphicon-ok"></span>
             Mark selected ({{ TodoModel.getSelected().length }}) as complete
         </a>
@@ -91,10 +91,10 @@
 			</div>
 			<div class="col-xs-11" ng-class="{ completed: !item.isActive }">
 				<div class="pull-right item-buttons">
-					<a ng-if="item.isActive" ng-click="TodoModel.complete(item)" class="btn btn-primary" title="Mark as complete">
+					<a ng-if="item.isActive" ng-click="complete(item)" class="btn btn-primary" title="Mark as complete">
 						<span class="glyphicon glyphicon-ok"></span>
 					</a>
-					<a ng-if="!item.isActive" ng-click="TodoModel.activate(item)" class="btn btn-success" title="Mark as active">
+					<a ng-if="!item.isActive" ng-click="activate(item)" class="btn btn-success" title="Mark as active">
 						<span class="glyphicon glyphicon-repeat"></span>
 					</a>
 					<a ng-click="TodoModel.remove(item)" class="btn btn-danger" title="Remove">
