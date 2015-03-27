@@ -34,6 +34,7 @@
                         isActive: true,
                         isSelected: false,
                         isVisible: true,
+                        // Timestamp is used as ID
                         ts: new Date().valueOf()
                     });
                     this.save();
