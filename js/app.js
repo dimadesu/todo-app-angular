@@ -6,13 +6,15 @@
 		'ui.bootstrap',
 		'LocalStorageModule',
 		// Custom modules
-		'todo.all',
-		'todo.alerts'
+        'todo.alerts',
+        'todo.all',
+        'todo.active',
+        'todo.completed'
 	]).config(['$urlRouterProvider', '$provide', '$httpProvider',
 		function ($urlRouterProvider, $provide, $httpProvider) {
 
 			// Handle unmatched url
-			$urlRouterProvider.otherwise("/");
+			$urlRouterProvider.otherwise("/all");
 
 			$provide.factory('httpInterceptor', function ($q) {
 				var interceptor = {

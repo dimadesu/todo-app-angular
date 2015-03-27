@@ -1,11 +1,11 @@
 (function (angular) {
     'use strict';
 
-    angular.module('todo.all', [])
+    angular.module('todo.completed', [])
         .config(['$stateProvider', function ($stateProvider) {
 
-            $stateProvider.state('all-state', {
-                url: '/all',
+            $stateProvider.state('completed-state', {
+                url: '/completed',
                 controller: 'AllCtrl',
                 templateUrl: 'todo.html'
             });

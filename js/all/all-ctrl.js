@@ -2,20 +2,36 @@
     'use strict';
 
     angular.module('todo.all')
-        .controller('AllCtrl', ['$scope', '$stateParams', 'TodoModel', '$timeout',
-            function ($scope, $stateParams, TodoModel, $timeout) {
+        .controller('AllCtrl', ['$scope', '$stateParams', 'TodoModel', '$timeout', '$state', '$rootScope',
+            function ($scope, $stateParams, TodoModel, $timeout, $state, $rootScope) {
 
                 TodoModel.init();
 
                 $scope.TodoModel = TodoModel;
 
-                function refresh () {
-                    $scope.items = TodoModel.data;
-                }
+                $rootScope.$on('$stateChangeSuccess', function () {
+
+                    if ($state.is('active-state')) {
+                        TodoModel.data.forEach(function (item) {
+                            item.isVisible = item.isActive;
+                        });
+                    } else if ($state.is('completed-state')) {
+                        TodoModel.data.forEach(function (item) {
+                            item.isVisible = !item.isActive;
+                        });
+                    } else {
+                        TodoModel.data.forEach(function (item) {
+                            item.isVisible = true;
+                        });
+                    }
+
+                });
 
                 $scope.$watch(function () {
                     return TodoModel.data.length;
-                }, refresh);
+                }, function () {
+                    $scope.items = TodoModel.data;
+                });
 
                 $scope.createItem = function ($event) {
                     if($event.keyCode === 13) {
@@ -50,7 +66,7 @@
                     });
                 };
 
-                /* Bulk operations */
+                /* Operations on groups of items */
 
                 $scope.selectAll = function () {
                     TodoModel.data.forEach(function (item) {

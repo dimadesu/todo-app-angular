@@ -26,6 +26,7 @@
                         isEdit: false,
                         isActive: true,
                         isSelected: false,
+                        isVisible: true,
                         ts: new Date()
                     });
                     this.set();
