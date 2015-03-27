@@ -15,10 +15,15 @@
                 },
                 create: function () {
                     this.data = [];
-                    this.set();
+                    this.save();
                 },
-                set: function () {
-                    localStorageService.set('TodoModel', this.data);
+                save: function () {
+                    localStorageService.set('TodoModel', this.data.map(function (item) {
+                        item.isSelected = false;
+                        item.isVisible = true;
+                        item.isEdit = false;
+                        return item;
+                    }));
                 },
                 add: function (item) {
                     this.data.push({
@@ -29,19 +34,19 @@
                         isVisible: true,
                         ts: new Date()
                     });
-                    this.set();
+                    this.save();
                 },
                 remove: function (index) {
                     this.data.splice(index, 1);
-                    this.set();
+                    this.save();
                 },
                 complete: function (index) {
                     this.data[index].isActive = false;
-                    this.set();
+                    this.save();
                 },
                 activate: function (index) {
                     this.data[index].isActive = true;
-                    this.set();
+                    this.save();
                 },
                 getActive: function () {
                     return this.data.filter(function (item) {

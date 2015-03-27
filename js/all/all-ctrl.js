@@ -1,15 +1,13 @@
 (function (angular) {
     'use strict';
 
+    var isInited = false;
+
     angular.module('todo.all')
         .controller('AllCtrl', ['$scope', '$stateParams', 'TodoModel', '$timeout', '$state', '$rootScope',
             function ($scope, $stateParams, TodoModel, $timeout, $state, $rootScope) {
 
-                TodoModel.init();
-
-                $scope.TodoModel = TodoModel;
-
-                $rootScope.$on('$stateChangeSuccess', function () {
+                function stateInit () {
 
                     if ($state.is('active-state')) {
                         TodoModel.data.forEach(function (item) {
@@ -25,7 +23,26 @@
                         });
                     }
 
-                });
+                }
+
+                function init () {
+
+                    TodoModel.init();
+
+                    // Since user can access through any url force checking the state on first load
+                    stateInit();
+
+                    $rootScope.$on('$stateChangeSuccess', stateInit);
+
+                    isInited = true;
+
+                }
+
+                if (!isInited) {
+                    init();
+                }
+
+                $scope.TodoModel = TodoModel;
 
                 $scope.$watch(function () {
                     return TodoModel.data.length;
@@ -75,10 +92,10 @@
                 };
 
                 $scope.markSelectedComplete = function () {
-                    TodoModel.data.filter(function (item) {
-                        return item.isSelected;
-                    }).forEach(function (item) {
-                        item.isActive = false;
+                    TodoModel.data.forEach(function (item, index) {
+                        if (item.isSelected) {
+                            TodoModel.complete(index);
+                        }
                     });
                 };
 
