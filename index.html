@@ -66,18 +66,28 @@
 			   class="form-control" placeholder="What needs to be done?" autofocus />
 	</div>
 	<div class="form-group">
-		<a class="btn btn-default" ng-click="TodoModel.selectAll()">
-            <span class="glyphicon glyphicon-check"></span>
-            Select all
-        </a>
-		<a class="btn btn-primary" ng-click="markSelectedComplete()">
-            <span class="glyphicon glyphicon-ok"></span>
-            Mark selected ({{ TodoModel.getSelected().length }}) as complete
-        </a>
-		<a ng-if="TodoModel.getCompleted().length" class="btn btn-danger" ng-click="TodoModel.removeCompleted()">
-			<span class="glyphicon glyphicon-trash"></span>
-			Clear completed ({{ TodoModel.getCompleted().length }})
-		</a>
+        <div class="clearfix">
+            <div class="pull-left">
+                <a class="btn btn-default" ng-click="TodoModel.selectAll()">
+                    <span class="glyphicon glyphicon-check"></span>
+                    Select all
+                </a>
+                <a class="btn btn-primary" ng-click="markSelectedComplete()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    Mark selected ({{ TodoModel.getSelected().length }}) as complete
+                </a>
+                <a ng-if="TodoModel.getCompleted().length" class="btn btn-danger" ng-click="TodoModel.removeCompleted()">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    Clear completed ({{ TodoModel.getCompleted().length }})
+                </a>
+            </div>
+            <div class="pull-right">
+                <a class="btn btn-warning" ng-click="loadJson()">
+                    <span class="glyphicon glyphicon-import"></span>
+                    Load JSON
+                </a>
+            </div>
+        </div>
 	</div>
 	<div class="row">
 		<div class="col-xs-12">

@@ -4,8 +4,8 @@
     var isInited = false;
 
     angular.module('todo.all')
-        .controller('AllCtrl', ['$scope', '$stateParams', 'TodoModel', '$timeout', '$state', '$rootScope',
-            function ($scope, $stateParams, TodoModel, $timeout, $state, $rootScope) {
+        .controller('AllCtrl', ['$scope', '$stateParams', 'TodoModel', '$timeout', '$state', '$rootScope', '$http',
+            function ($scope, $stateParams, TodoModel, $timeout, $state, $rootScope, $http) {
 
                 function refreshState () {
 
@@ -86,6 +86,26 @@
                     TodoModel.activate(item);
                     refreshState();
                 };
+                
+                $scope.loadJson = function () {
+
+                    /* Of course you would need to run project on server to be able to make a request to JSON */
+                    $http.get('sample.json').then(function (resp) {
+                        if (resp.data && resp.data.length) {
+                            resp.data.forEach(function (jsonItem) {
+                                TodoModel.data.push(
+                                    // Map format of JSON to model format
+                                    new TodoModel.Item({
+                                        content: jsonItem.title,
+                                        isActive: !jsonItem.done
+                                    })
+                                );
+                            });
+                            TodoModel.save();
+                        }
+                    });
+
+                }
 
             }
         ]);

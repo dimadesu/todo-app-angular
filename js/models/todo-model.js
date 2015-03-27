@@ -4,7 +4,7 @@
     angular.module('todo')
         .factory('TodoModel', ['localStorageService', function (localStorageService) {
 
-            var model = {
+            return {
                 data: null,
                 init: function () {
                     var lsData = localStorageService.get('TodoModel');
@@ -27,16 +27,17 @@
                         });
                     }));
                 },
-                add: function (item) {
-                    this.data.push({
-                        content: item,
-                        isEdit: false,
-                        isActive: true,
-                        isSelected: false,
-                        isVisible: true,
-                        // Timestamp is used as ID
-                        ts: new Date().valueOf()
-                    });
+                Item: function (obj) {
+                    this.content = obj.content;
+                    this.isEdit = false;
+                    this.isActive = angular.isDefined(obj.isActive) ? obj.isActive : true;
+                    this.isSelected = false;
+                    this.isVisible = true;
+                    // Timestamp is used as ID
+                    this.ts = new Date().valueOf();
+                },
+                add: function (content) {
+                    this.data.push(new Item({ content: content }));
                     this.save();
                 },
                 getItemIndex: function (_item) {
@@ -97,8 +98,6 @@
                     this.save();
                 }
             };
-
-            return model;
 
         }]);
 
