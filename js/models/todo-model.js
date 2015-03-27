@@ -34,7 +34,7 @@
                     this.isSelected = false;
                     this.isVisible = true;
                     // Timestamp is used as ID
-                    this.ts = new Date().valueOf();
+                    this.ts = obj.ts || new Date().valueOf();
                 },
                 add: function (content) {
                     this.data.push(new this.Item({ content: content }));

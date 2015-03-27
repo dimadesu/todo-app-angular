@@ -92,12 +92,14 @@
                     /* Of course you would need to run project on server to be able to make a request to JSON */
                     $http.get('sample.json').then(function (resp) {
                         if (resp.data && resp.data.length) {
+                            TodoModel.data.length = 0;
                             resp.data.forEach(function (jsonItem) {
                                 TodoModel.data.push(
                                     // Map format of JSON to model format
                                     new TodoModel.Item({
                                         content: jsonItem.title,
-                                        isActive: !jsonItem.done
+                                        isActive: !jsonItem.done,
+                                        ts: jsonItem.id
                                     })
                                 );
                             });
