@@ -6,13 +6,14 @@
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
 	<link rel="stylesheet" href="css/app.css">
 	<!-- Load Angular in head to prevent flash of view variables -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
 	<script src="bower_components/angular/angular.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">
 	<div class="container">
 		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
 				<span class="sr-only">Toggle navigation</span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
@@ -20,7 +21,7 @@
 			</button>
 			<a class="navbar-brand" ui-sref="all">TODO App</a>
 		</div>
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		<div class="collapse navbar-collapse" id="navbar-collapse">
 			<ul class="nav navbar-nav">
 				<li ui-sref-active="active"><a ui-sref="all">All</a></li>
 				<li ui-sref-active="active"><a ui-sref="active">Active</a></li>
@@ -61,12 +62,12 @@
 <script type="text/ng-template" id="todo.html">
 	<div class="form-group">
 		<input ng-model="newItem"
-			   ng-keyup="$event.keyCode == 13 ? createItem() : null"
+			   ng-keyup="createItem($event)"
 			   class="form-control" placeholder="What needs to be done?" autofocus />
 	</div>
 	<div class="form-group">
 		<a class="btn btn-success">Mark all as complete</a>
-		<a class="btn btn-success">Mark selected as complete</a>
+		<a class="btn btn-success">Mark selected ({{ TodoModel.getSelected().length }}) as complete</a>
 		<a ng-if="TodoModel.getCompleted().length" class="btn btn-danger">
 			<span class="glyphicon glyphicon-trash"></span>
 			Clear completed ({{ TodoModel.getCompleted().length }})
@@ -81,7 +82,7 @@
 		<!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
 		<div class="row item" ng-repeat="item in items">
 			<div class="col-xs-1">
-				<input type="checkbox" />
+				<input type="checkbox" ng-click="toggleSelected(item)" />
 			</div>
 			<div class="col-xs-11" ng-class="{ completed: !item.isActive }">
 				<div class="pull-right item-buttons">
@@ -95,19 +96,19 @@
 						<span class="glyphicon glyphicon-trash"></span>
 					</a>
 				</div>
-				<div ng-if="!item.isEdit" ng-dblclick="item.isEdit = true" class="item-content">
+                <input ng-if="item.isEdit"
+                       ng-keyup="$event.keyCode == 13 ? item.isEdit = false : null"
+                       ng-model="item.content"
+                       id="item-editor-{{ $index }}"
+                       class="form-control item-editor" value="{{ item.content }}" />
+				<div ng-if="!item.isEdit" ng-dblclick="enableEdit($index)" class="item-content">
 					{{ item.content }}
 				</div>
-				<input ng-if="item.isEdit"
-					   ng-keyup="$event.keyCode == 13 ? item.isEdit = false : null"
-					   ng-model="item.content"
-					   class="form-control item-editor" value="{{ item.content }}" />
 			</div>
 		</div>
 	</section>
 </script>
 <!-- Scripts here. Don't remove this ↓ -->
-<script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>

@@ -24,7 +24,8 @@
                     this.data.push({
                         content: item,
                         isEdit: false,
-                        isActive: true
+                        isActive: true,
+                        isSelected: false
                     });
                     this.set();
                 },
@@ -48,6 +49,11 @@
                 getCompleted: function () {
                     return this.data.filter(function (item) {
                         return !item.isActive;
+                    });
+                },
+                getSelected: function () {
+                    return this.data.filter(function (item) {
+                        return item.isSelected;
                     });
                 }
             };

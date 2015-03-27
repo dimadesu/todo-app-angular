@@ -1,5 +1,11 @@
 body {
-    padding-top: 60px;
+    padding-top: 70px;
+}
+
+footer {
+    margin-top: 10px;
+    border-top: 2px solid #eee;
+    padding: 26px;
 }
 
 .item {
