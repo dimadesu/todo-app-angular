@@ -67,26 +67,22 @@
 	</div>
 	<div class="form-group">
         <div class="clearfix">
-            <div class="pull-left">
-                <a class="btn btn-default" ng-click="TodoModel.selectAll()">
-                    <span class="glyphicon glyphicon-check"></span>
-                    Select all
-                </a>
-                <a class="btn btn-primary" ng-click="markSelectedComplete()">
-                    <span class="glyphicon glyphicon-ok"></span>
-                    Mark selected ({{ TodoModel.getSelected().length }}) as complete
-                </a>
-                <a ng-if="TodoModel.getCompleted().length" class="btn btn-danger" ng-click="TodoModel.removeCompleted()">
-                    <span class="glyphicon glyphicon-trash"></span>
-                    Clear completed ({{ TodoModel.getCompleted().length }})
-                </a>
-            </div>
-            <div class="pull-right">
-                <a class="btn btn-warning" ng-click="loadJson()">
-                    <span class="glyphicon glyphicon-import"></span>
-                    Load from JSON
-                </a>
-            </div>
+            <a class="btn btn-default" ng-click="selectAll()">
+                <span class="glyphicon glyphicon-check"></span>
+                {{ areAllSelected ? 'Deselect' : 'Select' }} all
+            </a>
+            <a class="btn btn-primary" ng-click="markSelectedComplete()">
+                <span class="glyphicon glyphicon-ok"></span>
+                Mark selected ({{ TodoModel.getSelected().length }}) as complete
+            </a>
+            <a ng-if="TodoModel.getCompleted().length" class="btn btn-danger" ng-click="TodoModel.removeCompleted()">
+                <span class="glyphicon glyphicon-trash"></span>
+                Clear completed ({{ TodoModel.getCompleted().length }})
+            </a>
+            <a class="btn btn-warning" ng-click="loadJson()">
+                <span class="glyphicon glyphicon-import"></span>
+                Load from JSON
+            </a>
         </div>
 	</div>
 	<div class="row">

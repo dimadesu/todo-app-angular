@@ -78,6 +78,11 @@
                         item.isSelected = true;
                     });
                 },
+                deselectAll: function () {
+                    this.data.forEach(function (item) {
+                        item.isSelected = false;
+                    });
+                },
                 markSelectedComplete: function () {
                     this.data.forEach(function (item) {
                         if (item.isSelected) {

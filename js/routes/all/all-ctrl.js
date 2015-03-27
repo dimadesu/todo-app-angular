@@ -107,7 +107,23 @@
                         }
                     });
 
-                }
+                };
+
+                $scope.selectAll = function () {
+
+                    $scope.areAllSelected ? TodoModel.deselectAll() : TodoModel.selectAll();
+
+                };
+
+                $scope.areAllSelected = false;
+
+                $scope.$watch(function () {
+                    return TodoModel.data.every(function (item) {
+                        return item.isSelected;
+                    });
+                }, function (newVal) {
+                    $scope.areAllSelected = newVal;
+                });
 
             }
         ]);
