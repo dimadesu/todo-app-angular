@@ -25,7 +25,8 @@
                         content: item,
                         isEdit: false,
                         isActive: true,
-                        isSelected: false
+                        isSelected: false,
+                        ts: new Date()
                     });
                     this.set();
                 },

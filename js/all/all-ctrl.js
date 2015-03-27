@@ -50,9 +50,33 @@
                     });
                 };
 
-                $scope.toggleSelected = function (item) {
-                    item.isSelected = !item.isSelected;
-                }
+                /* Bulk operations */
+
+                $scope.selectAll = function () {
+                    TodoModel.data.forEach(function (item) {
+                        item.isSelected = true;
+                    });
+                };
+
+                $scope.markSelectedComplete = function () {
+                    TodoModel.data.filter(function (item) {
+                        return item.isSelected;
+                    }).forEach(function (item) {
+                        item.isActive = false;
+                    });
+                };
+
+                $scope.removeCompleted = function () {
+                    var completed = TodoModel.getCompleted();
+                    for (var i = TodoModel.data.length-1; i >= 0; i--) {
+                        completed.some(function (comp) {
+                            if (TodoModel.data[i].ts === comp.ts) {
+                                TodoModel.data.splice(i, 1);
+                                return true;
+                            }
+                        });
+                    }
+                };
 
             }
         ]);
